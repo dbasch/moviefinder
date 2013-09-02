@@ -20,11 +20,10 @@ If you don't have an app with credentials, get them [here](https://dev.twitter.c
 
 3) From the command line, run:
 
-    $ sbt "run movies.html"
+    $ sbt run
 
-This will connect to Twitter and fetch thousands of tweets of the form "I rated Some Movie 7/10 [link to the movie] on #IMDB"
-
-I'm assuming those tweets are a representative sample of all ratings.
+This will connect to Twitter and fetch thousands of tweets of the form "I rated Some Movie 7/10 [link to the movie] on #IMDB ..." 
+I'm assuming those tweets are a representative sample of all ratings. It will send the output to a file called movies.html.
 
 Open movies.html with your browser. Pick a movie to watch, or maybe read a book instead.
 
