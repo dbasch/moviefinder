@@ -23,9 +23,9 @@ If you don't have an app with credentials, get them [here](https://dev.twitter.c
     $ sbt run
 
 This will connect to Twitter and fetch thousands of tweets of the form "I rated Some Movie 7/10 [link to the movie] on #IMDB ..." 
-I'm assuming those tweets are a representative sample of all ratings. It will send the output to a file called movies.html.
+I'm assuming those tweets are a representative sample of all ratings, but who knows. This is a quick hack, not science.
 
-Open movies.html with your browser. Pick a movie to watch, or maybe read a book instead.
+The program will generate a file called movies.html in the current folder. Open it with your browser, pick a movie to watch, or maybe read a book instead.
 
 ## License
 
