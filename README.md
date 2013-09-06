@@ -27,6 +27,9 @@ I'm assuming those tweets are a representative sample of all ratings, but who kn
 
 The program will generate a file called movies.html in the current folder. Open it with your browser, pick a movie to watch, or maybe read a book instead.
 
+[Output of this program](http://diegobasch.com/movies.html) (could be out of date, check the timestamp).
+
+
 ## License
 
 Copyright © 2013 Diego Basch
