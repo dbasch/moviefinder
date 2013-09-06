@@ -34,7 +34,7 @@ object MovieFinder {
 
   // Render a list of (Ratings, Title, Average Score, Url)
   def writeHTML(movies: List[(Int, String, Float, String)], outfile: String) {
-    val now = new java.text.SimpleDateFormat("HH:mm z, dd-MMM-yyyy").format(new java.util.Date())
+    val now = new java.text.SimpleDateFormat("HH:mm:ss z, dd-MMM-yyyy").format(new java.util.Date())
     val page = <html><style type="text/css">body {{font-family: verdana, arial, helvetica}}
       a:link {{text-decoration:none;}}
       tr:nth-child(even) {{background: #EEE}}
