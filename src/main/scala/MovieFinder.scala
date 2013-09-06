@@ -38,7 +38,7 @@ object MovieFinder {
     val now = new java.text.SimpleDateFormat("HH:mm:ss z, dd-MMM-yyyy").format(new java.util.Date())
     val tElem = <title>{ pageTitle }</title>
     val h2 = <h2>{ pageTitle }</h2> 
-    val footer = <p>Source code at <a href="http://github.com/dbasch/moviefinder">github.com/dbasch/moviefinder</a>.</p>
+    val footer = <p>Source code at <a href="http://github.com/dbasch/moviefinder">github.com/dbasch/moviefinder</a></p>
     val style = <style type="text/css">body {{font-family: verdana, arial, helvetica}}
         a:link {{text-decoration:none;}}
         tr:nth-child(even) {{background: #EEE}}
@@ -66,7 +66,7 @@ object MovieFinder {
     val ratings = tweets.map(extractMovie).filter(_._1 != "")
     val avg: List[Float] => Float = (x => x.sum / x.length)
     //group the ratings by movie title
-    val movies = ratings.groupBy(_._1).map(mv => (mv._2.length, mv._1, avg(mv._2.map(x => x._2.toFloat)), mv._2(0)._3))
+    val movies = ratings.groupBy(_._1).map(mv => (mv._2.length, mv._1, avg(mv._2.map(_._2.toFloat)), mv._2(0)._3))
     //sort them by number of ratings, keep the most popular, render web page
     writeHTML(movies.toList.sortBy(- _._1).take(20), outfile)
   }
