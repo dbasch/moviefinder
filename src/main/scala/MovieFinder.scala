@@ -8,7 +8,7 @@ import org.apache.commons.io.FileUtils
 object MovieFinder {
 
   val twitter = new TwitterFactory().getInstance
-  val threeDaysAgo = new java.util.Date().getTime - (3 * 86400 * 1000)      
+  val threeDaysAgo = new java.util.Date().getTime - (3 * 86400 * 1000)
   val Pattern = ".*rated (.*) ([0-9]{1,2})/10 (http://t.co/.*) #IMDb.*".r
 
   def extractMovie(tweet: String): (String, String, String) = tweet match {
@@ -31,30 +31,31 @@ object MovieFinder {
     else newTexts
   }
 
-  //Render a list of (Ratings, Title, Average Score, Url)
+  // render a list of (Ratings, Title, Average Score, Url)
+  // TODO: atone for the sin of rendering html like this :)
   def writeHTML(movies: List[(Int, String, Float, String)], outfile: String) {
-    
+
     val pageTitle ="20 most rated movies on IMDb in the past 72 hours"
     val now = new java.text.SimpleDateFormat("HH:mm:ss z, dd-MMM-yyyy").format(new java.util.Date())
     val tElem = <title>{ pageTitle }</title>
-    val h2 = <h2>{ pageTitle }</h2> 
+    val h2 = <h2>{ pageTitle }</h2>
     val footer = <p>Source code at <a href="http://github.com/dbasch/moviefinder">github.com/dbasch/moviefinder</a></p>
     val style = <style type="text/css">body {{font-family: verdana, arial, helvetica}}
-        a:link {{text-decoration:none;}}
-        tr:nth-child(even) {{background: #EEE}}
-        tr:nth-child(odd) {{background: #FFF}}</style>
-    
-    val page = <html>{ style }{ tElem } 
-    <body> { h2 }
+      a:link {{text-decoration:none;}}
+      tr:nth-child(even) {{background: #EEE}}
+      tr:nth-child(odd) {{background: #FFF}}</style>
+
+    val page = <html>{ style }{ tElem }
+      <body> { h2 }
         <p>generated at { now }</p>
         <table border="1" cellspacing="0" cellpadding="2">
           <tr><th>Title</th><th>Ratings</th><th>Avg. score</th></tr>
-          { movies.map(m => <tr><td><a href={m._4}>{m._2}</a></td>
-          <td>{m._1.toString}</td><td>{"%.1f".format(m._3)}</td></tr>) }
+          { movies.map(m => <tr><td><a href={ m._4 }>{ m._2 }</a></td>
+          <td>{ m._1.toString }</td><td>{"%.1f".format(m._3)}</td></tr>) }
         </table>
         { footer }
-        </body>
-        </html>
+      </body>
+    </html>
 
     FileUtils.writeStringToFile(new java.io.File(outfile), new scala.xml.PrettyPrinter(100, 2).format(page))
   }
