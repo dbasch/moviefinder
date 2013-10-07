@@ -5,7 +5,7 @@ import org.apache.commons.io.FileUtils
 /**
  * Connect to Twitter, find 72 hours worth of #IMDb tweets with movie ratings
  */
-object MovieFinder {
+object MovieFinder extends App {
 
   val twitter = new TwitterFactory().getInstance
   val threeDaysAgo = new java.util.Date().getTime - (3 * 86400 * 1000)
@@ -17,7 +17,7 @@ object MovieFinder {
   }
 
   // keep searching for tweets until we find some older than three days
-  def getTweets(texts: List[String], maxId: Long): List[String] = {
+  def getTweets(texts: List[String], maxId: Long = -1): List[String] = {
     val query = new Query("I rated #imdb")
     query.setCount(100)
     query.setMaxId(maxId)
@@ -35,7 +35,7 @@ object MovieFinder {
   // TODO: atone for the sin of rendering html like this :)
   def writeHTML(movies: List[(Int, String, Float, String)], outfile: String) {
 
-    val pageTitle ="20 most rated movies on IMDb in the past 72 hours"
+    val pageTitle = "20 most rated movies on IMDb in the past 72 hours"
     val now = new java.text.SimpleDateFormat("HH:mm:ss z, dd-MMM-yyyy").format(new java.util.Date())
     val tElem = <title>{ pageTitle }</title>
     val h2 = <h2>{ pageTitle }</h2>
@@ -60,15 +60,13 @@ object MovieFinder {
     FileUtils.writeStringToFile(new java.io.File(outfile), new scala.xml.PrettyPrinter(100, 2).format(page))
   }
 
-  def main(args: Array[String]) {
-    val outfile = if (args.length == 0) "movies.html" else args(0)
-    println("will write to: " + outfile)
-    val tweets = getTweets(List(), -1)
-    val ratings = tweets.map(extractMovie).filter(_._1 != "")
-    val avg: List[Float] => Float = (x => x.sum / x.length)
-    //group the ratings by movie title
-    val movies = ratings.groupBy(_._1).map(mv => (mv._2.length, mv._1, avg(mv._2.map(_._2.toFloat)), mv._2(0)._3))
-    //sort them by number of ratings, keep the most popular, render web page
-    writeHTML(movies.toList.sortBy(- _._1).take(20), outfile)
-  }
+  val outfile = if (args.length == 0) "movies.html" else args(0)
+  println("will write to: " + outfile)
+  val tweets = getTweets(List())
+  val ratings = tweets.map(extractMovie).filter(_._1 != "")
+  val avg: List[Float] => Float = (x => x.sum / x.length)
+  //group the ratings by movie title
+  val movies = ratings.groupBy(_._1).map(mv => (mv._2.length, mv._1, avg(mv._2.map(_._2.toFloat)), mv._2(0)._3))
+  //sort them by number of ratings, keep the most popular, render web page
+  writeHTML(movies.toList.sortBy(- _._1).take(20), outfile)
 }
